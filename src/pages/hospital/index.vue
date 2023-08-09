@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>这是xxx</p>
+    <p>这是医院详情</p>
   </div>
 </template>
 

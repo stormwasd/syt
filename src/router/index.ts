@@ -17,5 +17,12 @@ export default createRouter({
             path: '/',
             redirect: '/home'
         }
-    ]
+    ],
+    // 滚动行为: 控制滚动条的位置，这里设置的是访问某个路由默认滚动条会置顶
+    scrollBehavior() {
+        return {
+            left: 0,
+            top: 0
+        }
+    }
 })

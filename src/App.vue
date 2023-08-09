@@ -1,14 +1,12 @@
 <template>
   <div class="container">
     <!--顶部全局组件-->
-    <HospitalTop/>
+    <HospitalTop />
     <!--展示路由组件区域-->
     <div class="content">
       hahahahaha
     </div>
-    <div class="bottom">
-      123123
-    </div>
+    <HospitalBottom/>
   </div>
 </template>
 
@@ -20,16 +18,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+
   .content {
     margin-top: 70px;
     width: 1200px;
     min-height: 700px;
-    background: red;
-  }
-  .bottom {
-    width: 100%;
-    height: 50px;
-    background: cyan;
+    // background: red;
   }
 }
 </style>

@@ -6,6 +6,7 @@
     <div class="content">
       <router-view></router-view>
     </div>
+    <!--底部全局组件-->
     <HospitalBottom/>
   </div>
 </template>

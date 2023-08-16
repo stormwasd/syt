@@ -2,13 +2,95 @@
   <div>
     <!--首页轮播图的结构-->
     <carousel/>
+    <!--首页搜索医院的表单区域-->
+    <Search/>
+    <!--底部展示医院的结构-->
+    <el-row gutter="20">
+      <el-col :span="20">
+        <!--等级字组件-->
+        <Level/>
+        <!--地区选择子组件-->
+        <Region/>
+        <!--展示医院信息的卡片组件-->
+        <div class="hospital">
+          <Card class="item" v-for="(item, index) in hasHospitalArr" :key="index" :hospitalInfo="item"/>
+        </div>
+        <!--分页器-->
+          <el-pagination
+              v-model:current-page="pageNo"
+              v-model:page-size="pageSize"
+              :page-sizes="[10, 20, 30, 40]"
+              :background="true"
+              layout="prev, pager, next, jumper,->,sizes,total"
+              :total="total"
+              @current-change="currentChange"
+              @size-change="sizeChange"
+          />
+
+      </el-col>
+      <el-col :span="4">56</el-col>
+    </el-row>
   </div>
 </template>
 
 <script setup lang="ts">
+// 引入组合式API函数onMounted和响应式数据ref
+import {onMounted,ref} from "vue";
+import {reqHostpital} from "@/api/home";
 // 引入首页轮播图组件
 import Carousel from './carousel/index.vue'
+// 引入首页搜索的组件
+import Search from './search/index.vue'
+// 引入首页等级的组件
+import Level from './level/index.vue'
+// 引入首页地区选择的组件
+import Region from './region/index.vue'
+// 展示医院新的卡片组件
+import Card from './card/index.vue'
+
+// 分页器页码
+let pageNo = ref<number>(1)
+// 一页展示几条数据
+let pageSize = ref<number>(10)
+// 存储已有的医院的数据
+let hasHospitalArr = ref([]);
+// 存储医院总个数
+let total = ref(0);
+// 组件挂载完毕，发一次请求
+onMounted(() => {
+  getHospitalInfo();
+})
+// 获取已有的医院的数据
+const getHospitalInfo = async () => {
+  // 获取医院的数据：默认获取一页，一页十个医院的数据
+  let result: any = await reqHostpital(pageNo.value, pageSize.value);
+  // console.log(result);
+  // 当服务器数据一返回，立马存储下来，存储完后传递给子组件展示出来
+  if (result.code==200) {
+    // 存储已有的医院的数据
+    hasHospitalArr.value = result.data.content;
+    // 存储医院的总个数
+    total.value = result.data.totalElements;
+  }
+}
+// 分页器页码发生变化时候的回调
+const currentChange = () => {
+  getHospitalInfo();
+}
+// 分页器下拉菜单发生变化的时候会触发
+const sizeChange = () => {
+  getHospitalInfo();
+}
 </script>
 
 <style scoped lang="scss">
+.hospital {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  .item {
+    width: 48%;
+    margin: 10px 0px;
+  }
+}
 </style>
